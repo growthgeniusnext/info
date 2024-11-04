@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livoirien</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Bienvenue livoirien.info</h1>
+    </header>
+    <section id="news">
+        <h2>Dernières Nouvelles</h2>
+        <div id="news-container"></div>
+    </section>
+    <script>
+        async function fetchNews() {
+            const response = await fetch('http://127.0.0.1:5000/api/articles');
+            const news = await response.json();
+            const newsContainer = document.getElementById('news-container');
+            newsContainer.innerHTML = news.map(article => `
+                <div class="news-article">
+                    <h3>${article.title}</h3>
+                    <p>${article.description}</p>
+                    <a href="${article.link}" target="_blank">Lire la suite</a>
+                </div>
+            `).join('');
+        }
+
+        fetchNews();
+        setInterval(fetchNews, 60000); // Rafraîchir toutes les 60 secondes
+    </script>
+</body>
+</html>
